@@ -1,52 +1,32 @@
+import json
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-import time
-#import math
+# 1. Загружаем конфигурацию из файла
+with open('internal.json', 'r', encoding='utf-8') as config_file:
+    config = json.load(config_file)
 
+# 2. Извлекаем логин и пароль
+val_login = config['login_stepik']
+val_password = config['password_stepik']
 
-try: 
-    
+# 3. Основной код теста
+try:
     link = "https://demo01.avroraos.ru/emm/admin/ui"
     browser = webdriver.Chrome()
     browser.get(link)
     
-    #input func
-    #def calc(x):
-    #    return str(math.log(abs(12*math.sin(int(x)))))
-    
-    
-    #x_element = browser.find_element(By.ID, "login")
-    #x = x_element.text
-    val_login = "m.bautkin@omp.ru"
-    val_password = "1qpg2242Y2***"
+    # 4. Вводим данные из конфига
+    input_login = browser.find_element(By.ID, "login")
+    input_login.send_keys(val_login)
 
-
-    #находим текстовое поле логин и вводим ответ
-    input1 = browser.find_element(By.ID, "login")
-    input1.send_keys(val_login)
-
-    #находим текстовое поле пароль и вводим 
-    input1 = browser.find_element(By.ID, "password")
-    input1.send_keys(val_password)
-    
+    input_password = browser.find_element(By.ID, "password")
+    input_password.send_keys(val_password)
     
     login_btn = browser.find_element(By.CSS_SELECTOR, '[data-test="login-button"]')
     login_btn.click()
 
-
-    #Ставим галочку о том что мы робот 
-    #option1 = browser.find_element(By.CSS_SELECTOR, "#robotCheckbox")
-    #option1.click()
-    
-    #option2 = browser.find_element(By.CSS_SELECTOR, "#robotsRule")
-    #option2.click()
-
-    #button = browser.find_element(By.CSS_SELECTOR, ".btn.btn-default")
-    #button.click()
-    
 finally:
-    # ожидание чтобы визуально оценить результаты прохождения скрипта
-    time.sleep(10)
-    # закрываем браузер после всех манипуляций
+    time.sleep(10)  # визуальная проверка результата
     browser.quit()
